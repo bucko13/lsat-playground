@@ -25,10 +25,13 @@ const lsat = Lsat.fromChallenge(challenge)
 // Lsat.fromHeader(header) accomplishes the same thing
 // for a challenge with the "LSAT" prefix, which describes
 // the _type_ of challenge WWW-Authenticate challenge
-${challenge && 'lsat.toJSON()'}
-${challenge && JSON.stringify(Lsat.fromChallenge(challenge).toJSON(), null, 2)}
+lsat.toJSON()
+${challenge &&
+  !!challenge.length &&
+  JSON.stringify(Lsat.fromChallenge(challenge).toJSON(), null, 2)}
 `
 }
+
 const FromChallenge: React.FunctionComponent<Props> = ({ signingKey }) => {
   const [token, setToken] = React.useState('')
   const [challenge, setChallenge] = React.useState('')
@@ -36,7 +39,10 @@ const FromChallenge: React.FunctionComponent<Props> = ({ signingKey }) => {
 
   function handleChange(e: React.FormEvent<HTMLTextAreaElement>) {
     e.preventDefault()
-    setChallenge(e.currentTarget.value)
+    try {
+      Lsat.fromChallenge(e.currentTarget.value)
+      setChallenge(e.currentTarget.value)
+    } catch (e) {}
   }
 
   function createLsatFromChallenge(challenge: string): void {
@@ -86,7 +92,6 @@ const FromChallenge: React.FunctionComponent<Props> = ({ signingKey }) => {
           <Form error={!!error.length}>
             <TextArea
               placeholder="Paste challenge here..."
-              readOnly={false}
               onChange={handleChange}
             />
             {!!error.length && (

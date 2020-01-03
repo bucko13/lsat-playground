@@ -33,7 +33,7 @@ const builder = new MacaroonsBuilder(
   identifier.toString()
 )
 const lsat = Lsat.fromMacaroon(macaroon.serialize(), payreq)
-${lsat && 'lsat.toJSON()'}
+lsat.toJSON()
 ${lsat && JSON.stringify(Lsat.fromToken(lsat, payreq).toJSON(), null, 2)}
 `
 }
@@ -118,11 +118,7 @@ const GenerateLsat: React.FunctionComponent<Props> = ({ signingKey }) => {
         <Grid.Column>
           <Header as="h4">Enter BOLT11 Invoice</Header>
           <Form error={!!error.length}>
-            <TextArea
-              placeholder="lntb10u1..."
-              readOnly={false}
-              onChange={handleChange}
-            />
+            <TextArea placeholder="lntb10u1..." onChange={handleChange} />
             {!!error.length && (
               <Message
                 style={{ overflowWrap: 'break-word' }}

@@ -1,15 +1,13 @@
 import * as React from 'react'
-import {
-  Container,
-  Divider,
-  Header,
-  Icon,
-  // Grid,
-  Segment,
-} from 'semantic-ui-react'
+import { Container, Divider, Header, Icon, Segment } from 'semantic-ui-react'
 import { NextPage } from 'next'
 import Head from 'next/head'
-import { GenerateKey, GenerateLsat, FromChallenge } from '../components'
+import {
+  GenerateKey,
+  GenerateLsat,
+  FromChallenge,
+  SatisfyLsat,
+} from '../components'
 
 const IndexPage: NextPage = () => {
   const [signingKey, setKey] = React.useState('')
@@ -54,6 +52,10 @@ const IndexPage: NextPage = () => {
         <Divider />
         <Segment basic>
           <FromChallenge signingKey={signingKey} />
+        </Segment>
+        <Divider />
+        <Segment basic>
+          <SatisfyLsat />
         </Segment>
         <Divider />
       </Container>
