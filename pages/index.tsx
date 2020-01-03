@@ -9,6 +9,7 @@ import {
   SatisfyLsat,
   Navbar,
   PlaygroundSegment,
+  AddExpiration,
 } from '../components'
 
 const IndexPage: NextPage = () => {
@@ -27,8 +28,13 @@ const IndexPage: NextPage = () => {
     },
     {
       id: 'satisfy',
-      name: 'Satisfy',
+      name: 'Satisfy Lsat',
       children: <SatisfyLsat />,
+    },
+    {
+      id: 'expiration',
+      name: 'Add Expiration',
+      children: <AddExpiration />,
     },
   ]
 

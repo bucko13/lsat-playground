@@ -51,9 +51,7 @@ const Navbar: React.FunctionComponent<Props> = ({ navItems }) => {
             size="large"
           >
             <Container>
-              <Menu.Item href="#" active>
-                Home
-              </Menu.Item>
+              <Menu.Item href="#">Home</Menu.Item>
               {navItems.map((item, index) => (
                 <Menu.Item href={`#${item.id}`} key={index}>
                   {item.name}
