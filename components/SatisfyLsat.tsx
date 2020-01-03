@@ -13,8 +13,7 @@ import { Lsat } from 'lsat-js'
 import SyntaxHighlighter from 'react-syntax-highlighter'
 
 const codeSnippet = (token?: string): string => {
-  let snippet = `
-import {Lsat} from 'lsat-js'
+  let snippet = `import {Lsat} from 'lsat-js'
 
 const lsat = Lsat.fromToken(token)
 // throws if the preimage is malformed or does not match
@@ -35,6 +34,10 @@ const SatisfyLsat: React.FunctionComponent = () => {
   const [success, setSuccess] = React.useState(false)
 
   function handleTokenChange(e: React.FormEvent<HTMLTextAreaElement>) {
+    if (!e.currentTarget.value.length) {
+      setError('')
+      return
+    }
     e.preventDefault()
     setSuccess(false)
     try {
@@ -92,7 +95,7 @@ const SatisfyLsat: React.FunctionComponent = () => {
           Satisfy LSAT
           <Header.Subheader>
             In order for an LSAT to be satisfied, it must have a preimage that
-            corresponds its paymentHash, serving as its proof of payment.
+            corresponds to its paymentHash serving as its proof of payment.
           </Header.Subheader>
         </Header>
       </Grid.Row>
@@ -107,6 +110,7 @@ const SatisfyLsat: React.FunctionComponent = () => {
             />
             <Input
               placeholder="Enter secret/preimage here..."
+              style={{ margin: '1rem 0' }}
               onChange={handleSecretChange}
               fluid
             />
@@ -121,9 +125,23 @@ const SatisfyLsat: React.FunctionComponent = () => {
           </Form>
 
           {success ? (
-            <Segment color="green">
-              Success! That preimage matches LSAT's payment hash.
-            </Segment>
+            <React.Fragment>
+              <Segment color="green">
+                Success! That preimage matches LSAT's payment hash.
+              </Segment>
+
+              <Grid.Row columns={2}>
+                <Grid.Column>
+                  <Header as="h4">
+                    Satisfied LSAT
+                    <Header.Subheader>(With preimage)</Header.Subheader>
+                  </Header>
+                  <Segment style={{ overflowWrap: 'break-word' }}>
+                    {token}
+                  </Segment>
+                </Grid.Column>
+              </Grid.Row>
+            </React.Fragment>
           ) : (
             <Button onClick={() => addSecret()} style={{ margin: '1rem 0' }}>
               Set Preimage

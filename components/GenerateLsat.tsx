@@ -19,8 +19,7 @@ type Props = {
 }
 
 const codeSnippet = (lsat?: string, payreq?: string): string => {
-  return `
-import {Identifier, Lsat} from 'lsat-js'
+  return `import {Identifier, Lsat} from 'lsat-js'
 // can use any macaroon utility as long it follows lib-macaroon standard
 import { MacaroonsBuilder } from 'macaroons.js'
 
@@ -110,7 +109,8 @@ const GenerateLsat: React.FunctionComponent<Props> = ({ signingKey }) => {
         </Header>
         <Container textAlign="left">
           Since macaroon generation depends on the actual application, we will
-          generate our own base macaroon to add to the LSAT.
+          generate our own base-macaroon to use to generate the LSAT. This
+          requires a signing key, so make sure one has been set above first.
         </Container>
       </Grid.Row>
 

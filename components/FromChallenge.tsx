@@ -16,8 +16,7 @@ type Props = {
 }
 
 const codeSnippet = (challenge?: string): string => {
-  return `
-import {Lsat} from 'lsat-js'
+  return `import {Lsat} from 'lsat-js'
 
 // challenge must be a base64 encodedstring
 const lsat = Lsat.fromChallenge(challenge)
