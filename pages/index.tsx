@@ -10,6 +10,7 @@ import {
   Navbar,
   PlaygroundSegment,
   AddExpiration,
+  ValidateLsat,
 } from '../components'
 
 const IndexPage: NextPage = () => {
@@ -35,6 +36,11 @@ const IndexPage: NextPage = () => {
       id: 'expiration',
       name: 'Add Expiration',
       children: <AddExpiration />,
+    },
+    {
+      id: 'validate',
+      name: 'Validate',
+      children: <ValidateLsat signingKey={signingKey} />,
     },
   ]
 
