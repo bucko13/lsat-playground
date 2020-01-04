@@ -15,11 +15,28 @@ import SyntaxHighlighter from 'react-syntax-highlighter'
 
 const { useState } = React
 const codeSnippet = (token?: string): string => {
-  let snippet = `import {Lsat} from 'lsat-js'
+  let snippet = `import {
+  Lsat, 
+  expirationSatisfier, 
+  verifyFirstPartyMacaroon
+} from 'lsat-js'
 
 const lsat = Lsat.fromToken(token)
-// throws if the preimage is malformed or does not match
-lsat.setPreimage(secret)
+
+// check if is expired based on (optional) expiration caveat
+lsat.isExpired() 
+
+// checks LSAT preimage
+lsat.isSatisfied()
+
+// checks caveats are satisfied and macaroon signature is valid
+verifyFirstPartyMacaroon(
+  lsat.baseMacaroon,
+  signingKey,
+  // must pass all satisfiers necessary for validation
+  expirationSatisfier
+)
+
 lsat.toJSON()`
 
   if (token) {
@@ -155,17 +172,17 @@ const ValidateLsat: React.FunctionComponent<Props> = ({ signingKey }) => {
     <Grid>
       <Grid.Row>
         <Header as="h3">
-          Verify LSAT
+          Validate LSAT
           <Header.Subheader>
             Run various checks against a given LSAT to determine its validity.
           </Header.Subheader>
         </Header>
         <Container textAlign="left">
           This tool will use the signing key set at the top of the page unless
-          another is set belo. The key used to generate the original LSAT is{' '}
+          another is set below. The key used to generate the original LSAT is{' '}
           <span style={{ fontStyle: 'italic' }}>required</span> for full
           validation. For LSAT's provided by an outside source's
-          WWW-Authenticate header, this will not be possible since this only
+          WWW-Authenticate header, this will not be possible since this is only
           known by the macaroon "baker". You can, however, still check the
           preimage and any expiration caveats.
         </Container>
