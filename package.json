@@ -10,7 +10,7 @@
   "dependencies": {
     "bolt11": "^1.2.6",
     "isomorphic-unfetch": "3.0.0",
-    "lsat-js": "^1.0.1",
+    "lsat-js": "^1.0.2",
     "macaroons.js": "^0.3.8",
     "next": "latest",
     "react": "^16.12.0",

@@ -11,6 +11,7 @@ import {
   PlaygroundSegment,
   AddExpiration,
   ValidateLsat,
+  ParseToken,
 } from '../components'
 
 const IndexPage: NextPage = () => {
@@ -26,6 +27,11 @@ const IndexPage: NextPage = () => {
       id: 'from-challenge',
       name: 'From Challenge',
       children: <FromChallenge signingKey={signingKey} />,
+    },
+    {
+      id: 'parse-token',
+      name: 'Parse Token',
+      children: <ParseToken signingKey={signingKey} />,
     },
     {
       id: 'satisfy',
