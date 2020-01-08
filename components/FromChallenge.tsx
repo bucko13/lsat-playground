@@ -11,10 +11,6 @@ import {
 import { Lsat } from 'lsat-js'
 import SyntaxHighlighter from 'react-syntax-highlighter'
 
-type Props = {
-  signingKey: string
-}
-
 const codeSnippet = (challenge?: string): string => {
   return `import {Lsat} from 'lsat-js'
 
@@ -31,7 +27,7 @@ ${challenge &&
 `
 }
 
-const FromChallenge: React.FunctionComponent<Props> = ({ signingKey }) => {
+const FromChallenge: React.FunctionComponent = () => {
   const [token, setToken] = React.useState('')
   const [challenge, setChallenge] = React.useState('')
   const [error, setError] = React.useState('')
@@ -46,12 +42,7 @@ const FromChallenge: React.FunctionComponent<Props> = ({ signingKey }) => {
 
   function createLsatFromChallenge(challenge: string): void {
     let lsat
-    if (!signingKey.length) {
-      setError(
-        'Missing signing key. Please set at top of page before continuing'
-      )
-      return
-    } else if (!challenge.length) {
+    if (!challenge.length) {
       setError(
         'Missing payment request. Please provide BOLT11 invoice string before continuing'
       )

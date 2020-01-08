@@ -26,7 +26,7 @@ const IndexPage: NextPage = () => {
     {
       id: 'from-challenge',
       name: 'From Challenge',
-      children: <FromChallenge signingKey={signingKey} />,
+      children: <FromChallenge />,
     },
     {
       id: 'parse-token',
