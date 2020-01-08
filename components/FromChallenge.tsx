@@ -34,6 +34,9 @@ const FromChallenge: React.FunctionComponent = () => {
 
   function handleChange(e: React.FormEvent<HTMLTextAreaElement>) {
     e.preventDefault()
+    setToken('')
+    setChallenge('')
+    setError('')
     try {
       Lsat.fromChallenge(e.currentTarget.value)
       setChallenge(e.currentTarget.value)
