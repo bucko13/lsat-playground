@@ -12,6 +12,7 @@ import {
   AddExpiration,
   ValidateLsat,
   ParseToken,
+  Demo,
 } from '../components'
 
 const IndexPage: NextPage = () => {
@@ -47,6 +48,11 @@ const IndexPage: NextPage = () => {
       id: 'validate',
       name: 'Validate',
       children: <ValidateLsat signingKey={signingKey} />,
+    },
+    {
+      id: 'demo',
+      name: 'Demo',
+      children: <Demo />,
     },
   ]
 
