@@ -14,9 +14,7 @@ import { requestProvider, WebLNProvider } from 'webln'
 
 const { useState, useEffect } = React
 
-// const pokeapi = 'https://pokeapi.co/api/v2'
-// const boltwall = 'https://playground.bucko.now.sh/api/protected'
-const boltwall = 'http://localhost:3000/api/protected'
+const endpoint = 'https://playground.bucko.now.sh/api/protected'
 
 const Demo = () => {
   const initialPokemon = { name: '', image: '', type: '' }
@@ -26,16 +24,12 @@ const Demo = () => {
   const [hasWebLn, setHasWebLn] = useState(false)
   const [pokemonLoading, setPokeLoading] = useState(false)
   const [nodeLoading, setNodeLoading] = useState(false)
-  // const [blocked, setBlocked] = useState(false)
-  // const [endpoint, setEndpoint] = useState(pokeapi)
-  // const [endpoint, setEndpoint] = useState(boltwall)
   const [challenge, setChallenge] = useState('')
   const [invoice, setInvoice] = useState('')
   const [preimage, setPreimage] = useState('')
   const [token, setToken] = useState('')
 
   let webLn: WebLNProvider
-  const endpoint = boltwall
 
   function reset() {
     setInvoice('')
@@ -45,22 +39,24 @@ const Demo = () => {
   }
 
   useEffect(() => {
-    ;(async function() {
-      try {
-        if (!webLn) {
-          webLn = await requestProvider()
+    if (!webLn) {
+      requestProvider()
+        .then(provider => {
+          webLn = provider
           setHasWebLn(true)
-        }
-      } catch (e) {
-        console.error('no webln provider available in your browser')
-      }
-    })()
+          return webLn.getInfo()
+        })
+        .then(info => console.log('Connected with node:', info.node.pubkey))
+        .catch(e => console.error(e))
+    }
   }, [invoice])
 
   async function payInvoice() {
-    if (hasWebLn) {
-      const { preimage } = await webLn.sendPayment(invoice)
-      setPreimage(preimage)
+    if (hasWebLn && webLn) {
+      webLn
+        .sendPayment(invoice)
+        .then(response => setPreimage(response.preimage))
+        .catch(e => console.error('Problem paying invoice:', e))
     }
   }
 
@@ -109,23 +105,12 @@ const Demo = () => {
   async function getNode() {
     setNodeLoading(true)
     try {
-      const response = await fetch(`${boltwall}/api/node`)
+      const response = await fetch(`${endpoint}/api/node`)
       const nodeData = await response.json()
       setNode(nodeData)
     } catch (e) {}
     setNodeLoading(false)
   }
-
-  // determine if free requests are exhausted
-  // useEffect(() => {
-  //   window.sessionStorage.setItem('requestCount', count.toString())
-  //   if (count >= 1) setBlocked(true)
-  // }, [count])
-
-  // change endpoint if free requests are exhausted
-  // useEffect(() => {
-  //   if (blocked) setEndpoint(boltwall)
-  // }, [blocked])
 
   // set invoice if the challenge gets set
   useEffect(() => {
