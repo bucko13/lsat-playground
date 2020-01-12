@@ -28,6 +28,8 @@ const Demo = () => {
   const [invoice, setInvoice] = useState('')
   const [preimage, setPreimage] = useState('')
   const [token, setToken] = useState('')
+  const [expiration, setExpiration] = useState(0)
+  const [timer, setTimer] = useState(0)
 
   let webLn: WebLNProvider
 
@@ -38,9 +40,15 @@ const Demo = () => {
     setPokemon(initialPokemon)
   }
 
-  useEffect(() => {
+  function getTimeLeft() {
+    const difference = +expiration - +new Date()
+    return Math.floor((difference / 1000) % 60) - 2
+  }
+
+  function getWebLn() {
     if (!webLn) {
-      requestProvider()
+      setHasWebLn(false)
+      return requestProvider()
         .then(provider => {
           webLn = provider
           setHasWebLn(true)
@@ -49,9 +57,15 @@ const Demo = () => {
         .then(info => console.log('Connected with node:', info.node.pubkey))
         .catch(e => console.error(e))
     }
+  }
+
+  useEffect(() => {
+    getWebLn()
   }, [invoice])
 
   async function payInvoice() {
+    // sometimes webLn resets and we need to set it again
+    if (!webLn && hasWebLn) await getWebLn()
     if (hasWebLn && webLn) {
       webLn
         .sendPayment(invoice)
@@ -117,8 +131,23 @@ const Demo = () => {
     if (challenge.length) {
       const lsat = Lsat.fromChallenge(challenge)
       setInvoice(lsat.invoice)
+      setExpiration(lsat.validUntil)
     }
   }, [challenge])
+
+  // set initial timer when expiration is updated
+  useEffect(() => {
+    if (expiration > 0 && expiration > Date.now()) setTimer(getTimeLeft())
+  }, [expiration])
+
+  // tick timer down every 1000 milliseconds
+  useEffect(() => {
+    if (timer > 0) {
+      setTimeout(() => setTimer(getTimeLeft()), 1000)
+    } else {
+      reset()
+    }
+  }, [timer])
 
   // try and set the token when preimage gets set
   useEffect(() => {
@@ -170,14 +199,14 @@ const Demo = () => {
           </Header>
           <p>
             The LSATs generated here have an expiration caveat attached, giving
-            you 30 seconds of access{' '}
+            you ~30 seconds of access (with some buffer){' '}
             <span style={{ fontStyle: 'italic' }}>
               from the time of LSAT generation
             </span>{' '}
             (not payment). Use the data derived from the response and displayed
             in the right column in the playground to check validity.
           </p>
-          {!!invoice.length && (
+          {!!invoice.length && timer > 0 && (
             <React.Fragment>
               <Grid.Column>
                 {!!node.uris.length && (
@@ -228,8 +257,11 @@ const Demo = () => {
       </Grid.Row>
       <Grid.Row columns={2}>
         <Grid.Column>
+          {timer > 0 && !!invoice.length && (
+            <Segment raised>Expires in: {timer} seconds</Segment>
+          )}
           <Button onClick={getPokemon} loading={pokemonLoading} primary>
-            Get Pokemon
+            {timer > 0 ? 'Get Pokemon' : 'Get Invoice'}
           </Button>
           <Button onClick={getNode} loading={nodeLoading}>
             Get Node
