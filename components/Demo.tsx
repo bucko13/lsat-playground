@@ -42,7 +42,7 @@ const Demo = () => {
 
   function getTimeLeft() {
     const difference = +expiration - +new Date()
-    return Math.floor((difference / 1000) % 60) - 2
+    return Math.floor((difference / 1000) % 60) - 10 // with buffer
   }
 
   function getWebLn() {
@@ -144,8 +144,6 @@ const Demo = () => {
   useEffect(() => {
     if (timer > 0) {
       setTimeout(() => setTimer(getTimeLeft()), 1000)
-    } else {
-      reset()
     }
   }, [timer])
 
@@ -199,22 +197,22 @@ const Demo = () => {
           </Header>
           <p>
             The LSATs generated here have an expiration caveat attached, giving
-            you ~30 seconds of access (with some buffer){' '}
+            you ~40 seconds of access (with some buffer){' '}
             <span style={{ fontStyle: 'italic' }}>
               from the time of LSAT generation
             </span>{' '}
             (not payment). Use the data derived from the response and displayed
             in the right column in the playground to check validity.
           </p>
-          {!!invoice.length && timer > 0 && (
+          {!!node.uris.length && (
+            <Segment style={{ overflowWrap: 'break-word' }}>
+              <Header as="h4">Connect to our node:</Header>
+              {node?.uris[0]}
+            </Segment>
+          )}
+          {!!invoice.length && (
             <React.Fragment>
               <Grid.Column>
-                {!!node.uris.length && (
-                  <Segment style={{ overflowWrap: 'break-word' }}>
-                    <Header as="h4">Connect to our node:</Header>
-                    {node?.uris[0]}
-                  </Segment>
-                )}
                 <Input
                   action={
                     <React.Fragment>
@@ -257,11 +255,16 @@ const Demo = () => {
       </Grid.Row>
       <Grid.Row columns={2}>
         <Grid.Column>
-          {timer > 0 && !!invoice.length && (
+          {!!invoice.length && (
             <Segment raised>Expires in: {timer} seconds</Segment>
           )}
-          <Button onClick={getPokemon} loading={pokemonLoading} primary>
-            {timer > 0 ? 'Get Pokemon' : 'Get Invoice'}
+          <Button
+            onClick={getPokemon}
+            loading={pokemonLoading}
+            primary
+            disabled={timer > 0 && !!invoice.length && preimage.length < 64}
+          >
+            {!!invoice.length ? 'Get Pokemon' : 'Get Invoice'}
           </Button>
           <Button onClick={getNode} loading={nodeLoading}>
             Get Node
