@@ -11,7 +11,7 @@ import {
 import { Lsat } from 'lsat-js'
 import SyntaxHighlighter from 'react-syntax-highlighter'
 
-const codeSnippet = (challenge?: string): string => {
+const codeSnippet = (challenge?: string, token?: string): string => {
   return `import {Lsat} from 'lsat-js'
 
 // challenge must be a base64 encodedstring
@@ -21,7 +21,8 @@ const lsat = Lsat.fromChallenge(challenge)
 // for a challenge with the "LSAT" prefix, which describes
 // the _type_ of challenge WWW-Authenticate challenge
 lsat.toJSON()
-${challenge &&
+${token &&
+  challenge &&
   !!challenge.length &&
   JSON.stringify(Lsat.fromChallenge(challenge).toJSON(), null, 2)}
 `
@@ -35,22 +36,12 @@ const FromChallenge: React.FunctionComponent = () => {
   function handleChange(e: React.FormEvent<HTMLTextAreaElement>) {
     e.preventDefault()
     setToken('')
-    setChallenge('')
     setError('')
-    try {
-      Lsat.fromChallenge(e.currentTarget.value)
-      setChallenge(e.currentTarget.value)
-    } catch (e) {}
+    setChallenge(e.currentTarget.value)
   }
 
   function createLsatFromChallenge(challenge: string): void {
     let lsat
-    if (!challenge.length) {
-      setError(
-        'Missing payment request. Please provide BOLT11 invoice string before continuing'
-      )
-      return
-    }
 
     try {
       if (challenge.indexOf('LSAT ') > -1) lsat = Lsat.fromHeader(challenge)
@@ -62,7 +53,6 @@ const FromChallenge: React.FunctionComponent = () => {
     }
 
     setError('')
-
     setToken(lsat.toToken())
   }
 
@@ -99,6 +89,7 @@ const FromChallenge: React.FunctionComponent = () => {
           <Button
             onClick={() => createLsatFromChallenge(challenge)}
             style={{ margin: '1rem 0' }}
+            disabled={challenge.length < 5}
           >
             Get LSAT
           </Button>
@@ -124,7 +115,7 @@ const FromChallenge: React.FunctionComponent = () => {
         <Grid.Column>
           <Header as="h4">Code Snippet</Header>
           <SyntaxHighlighter language="javascript">
-            {codeSnippet(challenge)}
+            {codeSnippet(challenge, token)}
           </SyntaxHighlighter>
         </Grid.Column>
       </Grid.Row>
