@@ -24,10 +24,11 @@
     "no-console": "error"
   },
   "extends": [
-    "eslint:recommended",
+    "plugin:@next/next/recommended",
+    // "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
-    "plugin:@typescript-eslint/eslint-recommended",
-    "prettier",
-    "prettier/@typescript-eslint"
+    "plugin:@typescript-eslint/eslint-recommended"
+    // "prettier",
+    // "prettier/@typescript-eslint"
   ]
 }
