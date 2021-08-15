@@ -11,10 +11,11 @@ import {
 import { Lsat } from 'lsat-js'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import { requestProvider, WebLNProvider } from 'webln'
+import { BOLTWALL_CONFIGS } from './constants'
 
 const { useState, useEffect } = React
 
-const endpoint = 'https://playground.bucko.now.sh/api/protected'
+const endpoint = BOLTWALL_CONFIGS.BOLTWALL_HOST
 
 const Demo = () => {
   const initialPokemon = { name: '', image: '', type: '' }
@@ -30,6 +31,10 @@ const Demo = () => {
   const [token, setToken] = useState('')
   const [expiration, setExpiration] = useState(0)
   const [timer, setTimer] = useState(0)
+  const [nodeError, setNodeError] = useState('')
+  const [timeToPurchase, setTimeToPurchase] = useState(
+    BOLTWALL_CONFIGS.BOLTWALL_MIN_TIME
+  )
 
   let webLn: WebLNProvider
 
@@ -40,9 +45,13 @@ const Demo = () => {
     setPokemon(initialPokemon)
   }
 
+  function resetNode() {
+    setNode({ uris: [] })
+  }
+
   function getTimeLeft() {
     const difference = +expiration - +new Date()
-    return Math.floor((difference / 1000) % 60) - 10 // with buffer
+    return Math.floor(difference / 1000) - 2 // with buffer
   }
 
   function getWebLn() {
@@ -78,6 +87,7 @@ const Demo = () => {
     let id = 25 // pikachu
     if (pokemon.name.length) id = Math.floor(Math.random() * (806 - 1)) + 1
     setPokeLoading(true)
+    if (node?.uris?.length) resetNode()
     try {
       let options = {}
       const headers = new Headers({
@@ -89,7 +99,11 @@ const Demo = () => {
         cache: 'no-cache',
       }
 
-      const response = await fetch(`${endpoint}/pokemon/${id}`, options)
+      const response = await fetch(
+        `${endpoint}api/protected/${id}?amount=${(timeToPurchase + 2) * // setting a buffer since it takes some time to load
+          BOLTWALL_CONFIGS.BOLTWALL_RATE}`,
+        options
+      )
       const data = await response.json()
 
       if (response.status === 402) {
@@ -118,18 +132,26 @@ const Demo = () => {
 
   async function getNode() {
     setNodeLoading(true)
+    setNodeError('')
     try {
-      const response = await fetch(`${endpoint}/api/node`)
+      const response = await fetch(`${endpoint}api/node`)
       const nodeData = await response.json()
       setNode(nodeData)
-    } catch (e) {}
-    setNodeLoading(false)
+    } catch (e) {
+      setNodeError(
+        'Could not connect to the connect node. Please try again later.'
+      )
+      console.error('Problem connecting to node', e.message)
+    } finally {
+      setNodeLoading(false)
+    }
   }
 
   // set invoice if the challenge gets set
   useEffect(() => {
     if (challenge.length) {
       const lsat = Lsat.fromChallenge(challenge)
+      console.log('validUntil:', new Date(lsat.validUntil))
       setInvoice(lsat.invoice)
       setExpiration(lsat.validUntil)
     }
@@ -144,6 +166,8 @@ const Demo = () => {
   useEffect(() => {
     if (timer > 0) {
       setTimeout(() => setTimer(getTimeLeft()), 1000)
+    } else {
+      reset()
     }
   }, [timer])
 
@@ -204,10 +228,15 @@ const Demo = () => {
             (not payment). Use the data derived from the response and displayed
             in the right column in the playground to check validity.
           </p>
-          {!!node.uris.length && (
+          {!!node?.uris?.length && (
             <Segment style={{ overflowWrap: 'break-word' }}>
               <Header as="h4">Connect to our node:</Header>
               {node?.uris[0]}
+            </Segment>
+          )}
+          {!!nodeError.length && (
+            <Segment inverted color="red">
+              <Header as="h4">{nodeError}</Header>
             </Segment>
           )}
           {!!invoice.length && (
@@ -228,6 +257,7 @@ const Demo = () => {
                           labelPosition="right"
                           color="yellow"
                           onClick={payInvoice}
+                          title="Use webln enabled browser extension like Lightning Joule to pay directly"
                         >
                           {' '}
                           Pay
@@ -253,6 +283,20 @@ const Demo = () => {
           )}
         </Grid.Column>
       </Grid.Row>
+      {!invoice?.length && (
+        <Grid.Row>
+          <Grid.Column floated="left">
+            <Input
+              type="number"
+              label={{ content: 'seconds' }}
+              labelPosition="right"
+              value={timeToPurchase}
+              min={BOLTWALL_CONFIGS.BOLTWALL_MIN_TIME}
+              onChange={e => setTimeToPurchase(+e.currentTarget.value)}
+            />
+          </Grid.Column>
+        </Grid.Row>
+      )}
       <Grid.Row columns={2}>
         <Grid.Column>
           {!!invoice.length && (
@@ -262,7 +306,7 @@ const Demo = () => {
             onClick={getPokemon}
             loading={pokemonLoading}
             primary
-            disabled={timer > 0 && !!invoice.length && preimage.length < 64}
+            disabled={timer > 0 && !!invoice?.length && preimage?.length < 64}
           >
             {!!invoice.length ? 'Get Pokemon' : 'Get Invoice'}
           </Button>

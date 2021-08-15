@@ -1,66 +1,32 @@
-# TypeScript Next.js example
+# LSAT Playground
 
-This is a really simple project that show the usage of Next.js with TypeScript.
+This is a client-side webapp that demonstrates all the tools available in lsat-js.
+LSAT Playground includes code snippets and gives you a place to interact with LSATs without having to write a single
+line of code. It even provides a live demo where you can pay using a testnet node to get timed access to an API protected with Boltwall.
 
-## Deploy your own
+## Setup
 
-Deploy the example using [ZEIT Now](https://zeit.co/now):
-
-[![Deploy with ZEIT Now](https://zeit.co/button)](https://zeit.co/new/project?template=https://github.com/zeit/next.js/tree/canary/examples/with-typescript)
-
-## How to use it?
-
-### Using `create-next-app`
-
-Execute [`create-next-app`](https://github.com/zeit/next.js/tree/canary/packages/create-next-app) with [Yarn](https://yarnpkg.com/lang/en/docs/cli/create/) or [npx](https://github.com/zkat/npx#readme) to bootstrap the example:
-
-```bash
-npx create-next-app --example with-typescript with-typescript-app
-# or
-yarn create next-app --example with-typescript with-typescript-app
-```
-
-### Download manually
-
-Download the example:
-
-```bash
-curl https://codeload.github.com/zeit/next.js/tar.gz/canary | tar -xz --strip=2 next.js-canary/examples/with-typescript
-cd with-typescript
-```
-
-Install it and run:
-
-```bash
-npm install
-npm run dev
-# or
-yarn
-yarn dev
-```
-
-Deploy it to the cloud with [now](https://zeit.co/now) ([download](https://zeit.co/download)):
-
-```bash
-now
-```
-
-## The idea behind the example
-
-This example shows how to integrate the TypeScript type system into Next.js. Since TypeScript is supported out of the box with Next.js, all we have to do is to install TypeScript.
+Simply install the dependencies and then deploy.
 
 ```
-npm install --save-dev typescript
+$ yarn
+$ yarn dev
 ```
 
-To enable TypeScript's features, we install the type declaratons for React and Node.
+The above command will deploy a local instance of the playground.
+
+There are a few configuration variables that can be set at runtime if you want to use
+your own custom Boltwall configurations:
 
 ```
-npm install --save-dev @types/react @types/react-dom @types/node
+// host where boltwall api is, e.g. 'https://safron-city.vercel.app/'
+NEXT_PUBLIC_BOLTWALL_HOST
+// sats per second that the endpoint charges
+NEXT_PUBLIC_BOLTWALL_RATE
+// minimum number of seconds you will allow for purchase
+NEXT_PUBLIC_MIN_TIME
 ```
 
-When we run `next dev` the next time, Next.js will start looking for any `.ts` or `.tsx` files in our project and builds it. It even automatically creates a `tsconfig.json` file for our project with the recommended settings.
+To set these values to use in the demo, set the next.js environment variables. Learn more about [environment variables in nextjs](https://nextjs.org/docs/basic-features/environment-variables).
 
-Next.js has built-in TypeScript declarations, so we'll get autocompletion for Next.js' modules straight away.
-
-A `type-check` script is also added to `package.json`, which runs TypeScript's `tsc` CLI in `noEmit` mode to run type-checking separately. You can then include this, for example, in your `test` scripts.
+## Deploy live site
