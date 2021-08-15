@@ -7,6 +7,7 @@ import {
   Segment,
   Input,
   Icon,
+  Message,
 } from 'semantic-ui-react'
 import { Lsat } from 'lsat-js'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
@@ -221,13 +222,20 @@ const Demo = () => {
           </Header>
           <p>
             The LSATs generated here have an expiration caveat attached, giving
-            you ~40 seconds of access (with some buffer){' '}
+            you timed access (with some buffer){' '}
             <span style={{ fontStyle: 'italic' }}>
               from the time of LSAT generation
             </span>{' '}
             (not payment). Use the data derived from the response and displayed
             in the right column in the playground to check validity.
           </p>
+          <Grid.Row>
+            <Message info style={{ textAlign: 'center' }}>
+              ⚡️⚡️ This demo is built using a{' '}
+              {BOLTWALL_CONFIGS.NETWORK.toUpperCase()} node. Please interact
+              with it accordingly. ⚡️⚡️
+            </Message>
+          </Grid.Row>
           {!!node?.uris?.length && (
             <Segment style={{ overflowWrap: 'break-word' }}>
               <Header as="h4">Connect to our node:</Header>
@@ -235,9 +243,9 @@ const Demo = () => {
             </Segment>
           )}
           {!!nodeError.length && (
-            <Segment inverted color="red">
-              <Header as="h4">{nodeError}</Header>
-            </Segment>
+            <Message negative hidden={!nodeError?.length}>
+              {nodeError}
+            </Message>
           )}
           {!!invoice.length && (
             <React.Fragment>
@@ -311,7 +319,7 @@ const Demo = () => {
             {!!invoice.length ? 'Get Pokemon' : 'Get Invoice'}
           </Button>
           <Button onClick={getNode} loading={nodeLoading}>
-            Get Node
+            Get Node Info
           </Button>
           {!!pokemon.name.length && (
             <React.Fragment>
