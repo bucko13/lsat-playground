@@ -1104,11 +1104,6 @@ drbg.js@^1.0.1:
     create-hash "^1.1.2"
     create-hmac "^1.1.4"
 
-ecma-nacl@^2.0.1:
-  version "2.4.2"
-  resolved "https://registry.yarnpkg.com/ecma-nacl/-/ecma-nacl-2.4.2.tgz#c0b3d641217ab749ed5c62d287e67ff9a1eb828f"
-  integrity sha512-QEds3p35MI09kHp0TLFmBqN2eEItVEYIWaeTDtz0AqQZcGX9xoZ+vg984KfoNHyNT18WbXjP2VUmi8t1vja7sQ==
-
 ecurve@^1.0.0:
   version "1.0.6"
   resolved "https://registry.yarnpkg.com/ecurve/-/ecurve-1.0.6.tgz#dfdabbb7149f8d8b78816be5a7d5b83fcf6de797"
@@ -1945,11 +1940,6 @@ is-typed-array@^1.1.3, is-typed-array@^1.1.6:
     foreach "^2.0.5"
     has-tostringtag "^1.0.0"
 
-is-typedarray@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/is-typedarray/-/is-typedarray-1.0.0.tgz#e479c80858df0c1b11ddda6940f96011fcda4a9a"
-  integrity sha1-5HnICFjfDBsR3dppQPlgEfzaSpo=
-
 isarray@^1.0.0, isarray@~1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/isarray/-/isarray-1.0.0.tgz#bb935d48582cba168c06834957a54a3e07124f11"
@@ -2118,14 +2108,6 @@ macaroon@^3.0.4:
     sjcl "^1.0.6"
     tweetnacl "^1.0.0"
     tweetnacl-util "^0.15.0"
-
-macaroons.js@^0.3.8:
-  version "0.3.8"
-  resolved "https://registry.yarnpkg.com/macaroons.js/-/macaroons.js-0.3.8.tgz#7d91fe66ff74c6a6387e53c9d90a64695e81b158"
-  integrity sha1-fZH+Zv90xqY4flPJ2QpkaV6BsVg=
-  dependencies:
-    ecma-nacl "^2.0.1"
-    typedarray-to-buffer "^3.0.1"
 
 make-dir@^3.0.2:
   version "3.1.0"
@@ -3321,13 +3303,6 @@ typed-styles@^0.0.7:
   version "0.0.7"
   resolved "https://registry.yarnpkg.com/typed-styles/-/typed-styles-0.0.7.tgz#93392a008794c4595119ff62dde6809dbc40a3d9"
   integrity sha512-pzP0PWoZUhsECYjABgCGQlRGL1n7tOHsgwYv3oIiEpJwGhFTuty/YNeduxQYzXXa3Ge5BdT6sHYIQYpl4uJ+5Q==
-
-typedarray-to-buffer@^3.0.1:
-  version "3.1.5"
-  resolved "https://registry.yarnpkg.com/typedarray-to-buffer/-/typedarray-to-buffer-3.1.5.tgz#a97ee7a9ff42691b9f783ff1bc5112fe3fca9080"
-  integrity sha512-zdu8XMNEDepKKR+XYOXAVPtWui0ly0NtohUscw+UmaHiAWT8hrV1rr//H6V+0DvJ3OQ19S979M0laLfX8rm82Q==
-  dependencies:
-    is-typedarray "^1.0.0"
 
 typeforce@^1.11.3:
   version "1.18.0"

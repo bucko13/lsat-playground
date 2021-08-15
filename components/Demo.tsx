@@ -125,7 +125,7 @@ const Demo = () => {
         console.error('There was a problem getting sprite from request')
       }
     } catch (e) {
-      console.log('got error:', e)
+      console.log('Error communicating with boltwall: ', e)
     }
 
     setPokeLoading(false)
@@ -152,7 +152,6 @@ const Demo = () => {
   useEffect(() => {
     if (challenge.length) {
       const lsat = Lsat.fromChallenge(challenge)
-      console.log('validUntil:', new Date(lsat.validUntil))
       setInvoice(lsat.invoice)
       setExpiration(lsat.validUntil)
     }
@@ -265,7 +264,7 @@ const Demo = () => {
                           labelPosition="right"
                           color="yellow"
                           onClick={payInvoice}
-                          title="Use webln enabled browser extension like Lightning Joule to pay directly"
+                          title="Use webln enabled browser extension like Lightning Joule to pay directly from your browser"
                         >
                           {' '}
                           Pay

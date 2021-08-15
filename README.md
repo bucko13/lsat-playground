@@ -42,3 +42,9 @@ from your computer.
 
 Vercel also supports different deployments for different branches and setting different environment
 variables for different deployments.
+
+## Deploy your own custom boltwall
+
+You can easily run your own boltwall instances also using vercel via the `now-boltwall`
+command line utility. Learn more about it [here](https://github.com/Tierion/now-boltwall)
+or install it by running `npm i -g now-boltwall`.
