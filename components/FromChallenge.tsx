@@ -24,7 +24,7 @@ lsat.toJSON()
 ${token &&
   challenge &&
   !!challenge.length &&
-  JSON.stringify(Lsat.fromChallenge(challenge).toJSON(), null, 2)}
+  JSON.stringify(Lsat.fromChallenge(challenge.trim()).toJSON(), null, 2)}
 `
 }
 
@@ -37,7 +37,7 @@ const FromChallenge: React.FunctionComponent = () => {
     e.preventDefault()
     setToken('')
     setError('')
-    setChallenge(e.currentTarget.value)
+    setChallenge(e.currentTarget.value.trim())
   }
 
   function createLsatFromChallenge(challenge: string): void {

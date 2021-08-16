@@ -9,8 +9,8 @@ import {
   Segment,
   Message,
 } from 'semantic-ui-react'
-import { MacaroonsBuilder } from 'macaroons.js'
-import { Lsat, Identifier } from 'lsat-js'
+import * as Macaroon from 'macaroon'
+import { Lsat, Identifier, getRawMacaroon } from 'lsat-js'
 import { decode } from 'bolt11'
 import SyntaxHighlighter from 'react-syntax-highlighter'
 
@@ -21,17 +21,20 @@ type Props = {
 const codeSnippet = (lsat?: string, payreq?: string): string => {
   return `import {Identifier, Lsat} from 'lsat-js'
 // can use any macaroon utility as long it follows lib-macaroon standard
-import { MacaroonsBuilder } from 'macaroons.js'
+import * as Macaroon from 'macaroon'
 
 const identifier = new Identifier({
   paymentHash: Buffer.from(paymentHash, 'hex'),
 })
-const builder = new MacaroonsBuilder(
-  window.location.origin,
-  signingKey,
-  identifier.toString()
-)
-const lsat = Lsat.fromMacaroon(macaroon.serialize(), payreq)
+
+const macaroon = Macaroon.newMacaroon({
+  version: 1,
+  rootKey: signingKey,
+  identifier: identifier.toString(),
+  location: window.location.origin,
+})
+
+const lsat = Lsat.fromMacaroon(getRawMacaroon(macaroon), payreq)
 lsat.toJSON()
 ${lsat && JSON.stringify(Lsat.fromToken(lsat, payreq).toJSON(), null, 2)}
 `
@@ -85,14 +88,14 @@ const GenerateLsat: React.FunctionComponent<Props> = ({ signingKey }) => {
       paymentHash: Buffer.from(paymentHash, 'hex'),
     })
 
-    const builder = new MacaroonsBuilder(
-      window.location.origin,
-      signingKey,
-      identifier.toString()
-    )
+    const macaroon = Macaroon.newMacaroon({
+      version: 1,
+      rootKey: signingKey,
+      identifier: identifier.toString(),
+      location: window.location.origin,
+    })
 
-    const macaroon = builder.getMacaroon()
-    const lsat = Lsat.fromMacaroon(macaroon.serialize(), payreq)
+    const lsat = Lsat.fromMacaroon(getRawMacaroon(macaroon), payreq)
     setToken(lsat.toToken())
     setChallenge(lsat.toChallenge())
   }

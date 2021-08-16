@@ -10,7 +10,7 @@ import {
   Segment,
   Container,
 } from 'semantic-ui-react'
-import { Lsat, expirationSatisfier, verifyFirstPartyMacaroon } from 'lsat-js'
+import { Lsat, expirationSatisfier, verifyMacaroonCaveats } from 'lsat-js'
 import SyntaxHighlighter from 'react-syntax-highlighter'
 
 const { useState } = React
@@ -18,7 +18,7 @@ const codeSnippet = (token?: string): string => {
   let snippet = `import {
   Lsat, 
   expirationSatisfier, 
-  verifyFirstPartyMacaroon
+  verifyMacaroonCaveats
 } from 'lsat-js'
 
 const lsat = Lsat.fromToken(token)
@@ -30,7 +30,7 @@ lsat.isExpired()
 lsat.isSatisfied()
 
 // checks caveats are satisfied and macaroon signature is valid
-verifyFirstPartyMacaroon(
+verifyMacaroonCaveats(
   lsat.baseMacaroon,
   signingKey,
   // must pass all satisfiers necessary for validation
@@ -157,7 +157,7 @@ const ValidateLsat: React.FunctionComponent<Props> = ({ signingKey }) => {
 
     // test macaroon validity (using signing key)
     try {
-      const isValid = verifyFirstPartyMacaroon(
+      const isValid = verifyMacaroonCaveats(
         lsat.baseMacaroon,
         key || signingKey,
         expirationSatisfier
