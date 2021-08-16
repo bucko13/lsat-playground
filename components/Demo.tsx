@@ -10,6 +10,7 @@ import {
   Message,
 } from 'semantic-ui-react'
 import { Lsat } from 'lsat-js'
+import QRCode from 'qrcode.react'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import { requestProvider, WebLNProvider } from 'webln'
 import { BOLTWALL_CONFIGS } from './constants'
@@ -101,7 +102,7 @@ const Demo = () => {
       }
 
       const response = await fetch(
-        `${endpoint}api/protected/${id}?amount=${(timeToPurchase + 2) * // setting a buffer since it takes some time to load
+        `${endpoint}api/protected/${id}?amount=${(timeToPurchase + 5) * // setting a buffer since it takes some time to load
           BOLTWALL_CONFIGS.BOLTWALL_RATE}`,
         options
       )
@@ -228,13 +229,11 @@ const Demo = () => {
             (not payment). Use the data derived from the response and displayed
             in the right column in the playground to check validity.
           </p>
-          <Grid.Row>
-            <Message info style={{ textAlign: 'center' }}>
-              ⚡️⚡️ This demo is built using a{' '}
-              {BOLTWALL_CONFIGS.NETWORK.toUpperCase()} node. Please interact
-              with it accordingly. ⚡️⚡️
-            </Message>
-          </Grid.Row>
+          <Message info style={{ textAlign: 'center' }}>
+            ⚡️⚡️ This demo is built using a{' '}
+            {BOLTWALL_CONFIGS.NETWORK.toUpperCase()} node. Please interact with
+            it accordingly. ⚡️⚡️
+          </Message>
           {!!node?.uris?.length && (
             <Segment style={{ overflowWrap: 'break-word' }}>
               <Header as="h4">Connect to our node:</Header>
@@ -304,6 +303,13 @@ const Demo = () => {
           </Grid.Column>
         </Grid.Row>
       )}
+
+      {!!invoice.length && !preimage.length && (
+        <Grid.Row>
+          <QRCode value={invoice} size={200} />
+        </Grid.Row>
+      )}
+
       <Grid.Row columns={2}>
         <Grid.Column>
           {!!invoice.length && (
