@@ -10,7 +10,7 @@ type Props = {
 const codeSnippet = (token?: string): string => {
   return `import {Lsat} from 'lsat-js'
 
-// challenge must be a base64 encodedstring
+// challenge must be a base64 encoded string
 const lsat = Lsat.fromToken(token)
 
 lsat.toJSON()
@@ -34,6 +34,7 @@ const ParseToken: React.FunctionComponent<Props> = () => {
       Lsat.fromToken(e.currentTarget.value)
       setToken(e.currentTarget.value)
     } catch (e) {
+      // eslint-disable-next-line no-console
       console.error('Problem parsing lsat:', e.message)
       setToken('')
       setError(e.message)

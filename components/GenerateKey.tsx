@@ -26,7 +26,6 @@ const GenerateKey: React.FunctionComponent<Props> = ({
   }
 
   function handleSave() {
-    console.log('signingKey:', signingKey)
     setKey(signingKey)
     setDisabled(true)
   }
