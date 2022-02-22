@@ -14,6 +14,7 @@ import {
   ParseToken,
   Demo,
 } from '../components'
+import Caveats from '../components/Caveats'
 
 const IndexPage: NextPage = () => {
   const [signingKey, setKey] = React.useState('')
@@ -38,6 +39,11 @@ const IndexPage: NextPage = () => {
       id: 'satisfy',
       name: 'Satisfy Lsat',
       children: <SatisfyLsat />,
+    },
+    {
+      id: 'caveats',
+      name: 'Custom Caveats',
+      children: <Caveats />,
     },
     {
       id: 'expiration',

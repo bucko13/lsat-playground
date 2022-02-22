@@ -1,13 +1,5 @@
 import React from 'react'
 import {
-  // Button,
-  // Divider,
-  // Grid,
-  // Header,
-  // Icon,
-  // Image,
-  // List,
-  // Sidebar,
   Container,
   Menu,
   Responsive,
