@@ -154,8 +154,9 @@ const Caveats: React.FunctionComponent = () => {
       setMacaroon(lsat.baseMacaroon)
       updateCaveatsFromLsat(lsat)
       clearFields()
-    } catch (e) {
-      updateCaveatError(e.message)
+    } catch (e: unknown) {
+      const err = e as Error
+      updateCaveatError(err.message)
     }
   }
 
