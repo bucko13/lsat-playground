@@ -8,37 +8,40 @@
     "type-check": "tsc",
     "lint": "eslint"
   },
-  "engines" : { 
-    "node" : ">=16.0.0" 
+  "engines": {
+    "node": ">=16.0.0"
   },
   "dependencies": {
     "bolt11": "^1.2.6",
     "isomorphic-unfetch": "3.0.0",
     "lsat-js": "^2.0.6",
     "macaroon": "^3.0.4",
-    "next": "11.1.0",
-    "qrcode.react": "^1.0.1",
-    "react": "^17.0.2",
+    "next": "14.2.35",
+    "qrcode.react": "4.2.0",
+    "react": "18.3.1",
     "react-copy-to-clipboard": "^5.0.2",
-    "react-dom": "^16.12.0",
-    "react-syntax-highlighter": "^12.2.1",
-    "semantic-ui-react": "^0.88.2",
+    "react-dom": "18.3.1",
+    "react-syntax-highlighter": "16.1.1",
+    "semantic-ui-react": "2.1.5",
     "webln": "^0.2.2"
   },
   "devDependencies": {
     "@next/eslint-plugin-next": "^11.1.0",
     "@types/node": "^12.12.21",
     "@types/qrcode.react": "^1.0.2",
-    "@types/react": "^16.9.16",
-    "@types/react-dom": "^16.9.4",
-    "@types/react-syntax-highlighter": "^11.0.3",
+    "@types/react": "18.3.28",
+    "@types/react-dom": "18.3.7",
+    "@types/react-syntax-highlighter": "15.5.13",
     "@typescript-eslint/eslint-plugin": "^4.29.1",
     "@typescript-eslint/parser": "^4.29.1",
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^6.9.0",
     "eslint-plugin-prettier": "^3.1.2",
     "prettier": "^1.19.1",
-    "typescript": "4.3.5"
+    "typescript": "^6.0.3"
   },
-  "license": "ISC"
+  "license": "ISC",
+  "resolutions": {
+    "@types/react": "18.3.28"
+  }
 }
