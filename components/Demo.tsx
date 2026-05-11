@@ -10,7 +10,7 @@ import {
   Message,
 } from 'semantic-ui-react'
 import { Lsat } from 'lsat-js'
-import QRCode from 'qrcode.react'
+import { QRCodeCanvas as QRCode } from 'qrcode.react'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import { requestProvider, WebLNProvider } from 'webln'
 import { BOLTWALL_CONFIGS } from './constants'

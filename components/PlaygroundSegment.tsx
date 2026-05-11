@@ -4,6 +4,7 @@ import { Divider, Segment } from 'semantic-ui-react'
 
 type Props = {
   id: string
+  children?: React.ReactNode
 }
 
 const PlaygroundSegment: React.FunctionComponent<Props> = ({
