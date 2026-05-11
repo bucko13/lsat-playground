@@ -9,7 +9,7 @@
     "lint": "eslint"
   },
   "engines": {
-    "node": ">=16.0.0"
+    "node": ">=24.0.0"
   },
   "dependencies": {
     "bolt11": "^1.2.6",
