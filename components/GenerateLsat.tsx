@@ -82,7 +82,7 @@ const GenerateLsat: React.FunctionComponent<Props> = ({ signingKey }) => {
       )
       return
     }
-    let paymentHash: string = tag.data.toString()
+    const paymentHash: string = tag.data.toString()
 
     const identifier = new Identifier({
       paymentHash: Buffer.from(paymentHash, 'hex'),
